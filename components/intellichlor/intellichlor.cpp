@@ -65,7 +65,7 @@ void INTELLICHLORComponent::loop() {
 
             if(attempts > retries)
             {
-                ESP_LOGD(TAG, "No response %i > %i removing from send queue", retries, attempts);
+                ESP_LOGE(TAG, "No response %i > %i removing from send queue", retries, attempts);
                 this->send_queue_.pop();
             }
 
