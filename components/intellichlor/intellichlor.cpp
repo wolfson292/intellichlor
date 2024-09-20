@@ -128,6 +128,7 @@ void INTELLICHLORComponent::takeover_() {
 void INTELLICHLORComponent::set_percent_(uint8_t percent) {
     ESP_LOGD(TAG, "send SetPercent");
     // 16% requires an extra zero byte of padding, because ...
+    this->last_set_percent_ = percent;
     if(percent == 16) {
         uint8_t cmd[4] = {0x50, 0x11, percent, 0x00};
         this->send_command_(cmd, 4, 3);
@@ -295,9 +296,12 @@ bool INTELLICHLORComponent::readline_(int readch, uint8_t *buffer, int len) {
                 this->low_temp_binary_sensor_->publish_state(GETBIT8(errorField, 6));
                 this->check_pcb_binary_sensor_->publish_state(GETBIT8(errorField, 7));
 
-
                 this->salt_ppm_sensor_->publish_state(saltPPM);
                 this->error_sensor_->publish_state(errorField);
+
+                if (this->set_percent_sensor != nullptr) {
+                    this->set_percent_sensor->publish_state(this->last_set_percent_);
+                }
                 
             } else if(pos >= 4 && buffer[3] == 0x01 )
             {

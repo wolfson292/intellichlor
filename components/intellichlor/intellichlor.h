@@ -29,6 +29,7 @@ class INTELLICHLORComponent : public PollingComponent, public uart::UARTDevice {
   SUB_SENSOR(water_temp)
   SUB_SENSOR(status)
   SUB_SENSOR(error)
+  SUB_SENSOR(set_percent)
   SUB_BINARY_SENSOR(no_flow)
   SUB_BINARY_SENSOR(low_salt)
   SUB_BINARY_SENSOR(high_salt)
@@ -70,6 +71,9 @@ class INTELLICHLORComponent : public PollingComponent, public uart::UARTDevice {
   
   // send queue tuple<retries,current_attempt,data>
   std::queue<std::tuple<uint8_t, uint8_t, std::vector<uint8_t> >> send_queue_;
+
+  // last set percent to publish as sensor on set response
+  uint8_t last_set_percent_ = 0;
 
   bool run_again_;
 

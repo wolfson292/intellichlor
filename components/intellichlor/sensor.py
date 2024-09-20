@@ -15,7 +15,8 @@ from esphome.const import (
     DEVICE_CLASS_VOLATILE_ORGANIC_COMPOUNDS_PARTS,
     UNIT_PARTS_PER_MILLION,
     DEVICE_CLASS_TEMPERATURE,
-    UNIT_CELSIUS
+    UNIT_CELSIUS,
+    UNIT_PERCENT
 )
 from . import CONF_INTELLICHLOR_ID, INTELLICHLORComponent
 
@@ -25,6 +26,7 @@ CONF_SALT_PPM = "salt_ppm"
 CONF_TEMP = "water_temp"
 CONF_STATUS = "status"
 CONF_ERROR = "error"
+CONF_SET_PERCENT = "set_percent"
 
 CONFIG_SCHEMA = cv.Schema(
     {
@@ -43,6 +45,9 @@ CONFIG_SCHEMA = cv.Schema(
         ),
         cv.Optional(CONF_ERROR): sensor.sensor_schema(
         ),
+        cv.Optional(CONF_SET_PERCENT): sensor.sensor_schema(
+            unit_of_measurement=UNIT_PERCENT,
+        ),
     }
 )
 
@@ -60,4 +65,7 @@ async def to_code(config):
     if error_config := config.get(CONF_ERROR):
         sens = await sensor.new_sensor(error_config)
         cg.add(intellichlor_component.set_error_sensor(sens))
+    if set_percent_config := config.get(CONF_SET_PERCENT):
+        sens = await sensor.new_sensor(set_percent_config)
+        cg.add(intellichlor_component.set_set_percent_sensor(sens))
     
