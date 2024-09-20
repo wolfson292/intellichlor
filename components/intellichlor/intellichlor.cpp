@@ -299,8 +299,8 @@ bool INTELLICHLORComponent::readline_(int readch, uint8_t *buffer, int len) {
                 this->salt_ppm_sensor_->publish_state(saltPPM);
                 this->error_sensor_->publish_state(errorField);
 
-                if (this->set_percent_sensor != nullptr) {
-                    this->set_percent_sensor->publish_state(this->last_set_percent_);
+                if (this->set_percent_sensor_ != nullptr) {
+                    this->set_percent_sensor_->publish_state(this->last_set_percent_);
                 }
                 
             } else if(pos >= 4 && buffer[3] == 0x01 )
