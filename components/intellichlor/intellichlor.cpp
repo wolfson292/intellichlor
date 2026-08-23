@@ -244,7 +244,7 @@ void INTELLICHLORComponent::try_restore_boost_() {
         this->boost_remaining_pub_ = 0xFFFFFFFF;
         if (this->swg_boost_select_ != nullptr)
             this->swg_boost_select_->publish_state(this->hours_to_option_(p.hours));
-        ESP_LOGI(TAG, "Resumed boost: %u min remaining", remaining_s / 60UL);
+        ESP_LOGI(TAG, "Resumed boost: %lu min remaining", remaining_s / 60UL);
     } else {
         // nothing to resume — clear any stale entry and show Off
         if (p.hours != 0 || p.end_epoch != 0)
